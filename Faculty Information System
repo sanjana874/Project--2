@@ -1,0 +1,83 @@
+class Faculty:
+    def __init__(self, faculty_id, name, department, courses):
+        self.faculty_id = faculty_id
+        self.name = name
+        self.department = department
+        self.courses = courses
+
+class FacultyInformationSystem:
+    def __init__(self):
+        self.faculty_records = {}
+        self.next_id = 1
+
+    def add_faculty(self):
+        name = input("Enter faculty name: ")
+        department = input("Enter department: ")
+        courses = input("Enter courses (comma-separated): ").split(',')
+        
+        faculty = Faculty(self.next_id, name, department, [course.strip() for course in courses])
+        self.faculty_records[self.next_id] = faculty
+        print(f"Faculty added with ID: {self.next_id}")
+        self.next_id += 1
+
+    def update_faculty(self):
+        faculty_id = int(input("Enter faculty ID to update: "))
+        if faculty_id in self.faculty_records:
+            name = input("Enter new name (leave blank to keep unchanged): ")
+            department = input("Enter new department (leave blank to keep unchanged): ")
+            courses = input("Enter new courses (comma-separated, leave blank to keep unchanged): ")
+            
+            faculty = self.faculty_records[faculty_id]
+            if name:
+                faculty.name = name
+            if department:
+                faculty.department = department
+            if courses:
+                faculty.courses = [course.strip() for course in courses.split(',')]
+            
+            print("Faculty record updated successfully.")
+        else:
+            print("Faculty ID not found.")
+
+    def delete_faculty(self):
+        faculty_id = int(input("Enter faculty ID to delete: "))
+        if faculty_id in self.faculty_records:
+            del self.faculty_records[faculty_id]
+            print("Faculty record deleted successfully.")
+        else:
+            print("Faculty ID not found.")
+
+    def view_faculty(self):
+        if not self.faculty_records:
+            print("No faculty records available.")
+            return
+        for faculty in self.faculty_records.values():
+            print(f"ID: {faculty.faculty_id}, Name: {faculty.name}, Department: {faculty.department}, Courses: {', '.join(faculty.courses)}")
+
+    def run(self):
+        while True:
+            print("\nFaculty Information System")
+            print("1. Add Faculty")
+            print("2. Update Faculty")
+            print("3. Delete Faculty")
+            print("4. View Faculty")
+            print("5. Exit")
+            
+            choice = input("Enter your choice: ")
+            if choice == '1':
+                self.add_faculty()
+            elif choice == '2':
+                self.update_faculty()
+            elif choice == '3':
+                self.delete_faculty()
+            elif choice == '4':
+                self.view_faculty()
+            elif choice == '5':
+                print("Exiting system...")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    system = FacultyInformationSystem()
+    system.run()
